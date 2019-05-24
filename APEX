@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri May 24 16:50:15 2019
+
+@author: sowjanyamattaparthi
+"""
+#Load the librarys
+import pandas as pd #To work with dataset
+import numpy as np #Math library
+import seaborn as sns #Graph library that use matplot in background
+import matplotlib.pyplot as plt #to plot some parameters in seaborn
+
+# Importing the dataset
+dataset = pd.read_csv('credit.csv')
+
+dataset.head() #top 5 rows of the dataset
+
+#Information about the data
+dataset.info()
+# No of observations and attributes
+dataset.shape
+
+# Summary of descriptive statistics
+dataset.describe()
+
+#Listing out names of columns
+column_names=dataset.columns.tolist()
+
+#How much the amount varies.
+import matplotlib.pyplot as plt
+
+num_bins = 10
+plt.hist(dataset['credit_amount'], num_bins, normed=1, facecolor='blue', alpha=0.7)
+plt.show()
+
+#BUILDING A MODEL
+
+
+#First Look at the data:
+#Looking the Type of Data
+#Null Numbers
+#Unique values
+#The first rows of our dataset
+print(dataset.info())
+
+#Looking unique values
+print(dataset.nunique())
+#Looking the data
+print(dataset.head())
+
+# QUALITY OF DATA
+#To detect a good credit and credit at risk have the following  information like:
+#	• Length of credit history
+#	• Amounts owed
+#	• Payment history
+#	• New Credit 
+#Enough of data is available to train the data.
+#Brief description of each field is available.
+#There is no missing values which makes the data useful as more missing values the less useful is the data
+#We have enough history of data in terms of years
