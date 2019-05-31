@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri May 24 16:50:15 2019
+
+@author: sowjanyamattaparthi
+"""
+
+#DATA PREPROCESSING
+
+#Load the librarys
+import pandas as pd #To work with dataset
+import numpy as np #Math library
+import seaborn as sns #Graph library that use matplot in background
+import matplotlib.pyplot as plt #to plot some parameters in seaborn
+
+# Importing the dataset
+credit_data = pd.read_csv('credit.csv')
+X = credit_data.iloc[:, :-1].values
+Y= credit_data.iloc[:, 20].values
+
+credit_data.head() #top 5 rows of the dataset
+
+#Information about the data
+credit_data.info()
+# No of observations and attributes
+credit_data.shape
+
+# Identifiy missing values
+pd.isnull(credit_data)
+
+# Summary of descriptive statistics
+credit_data.describe()
+
+
+#Transforming the data into Dummy variables
+
+credit_data['Saving accounts'] = credit_data['Saving accounts'].fillna('no_inf')
+credit_data['Checking account'] = credit_data['Checking account'].fillna('no_inf')
+
+#Purpose to Dummies Variable
+#Checking_status in dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data.checking_status, drop_first=True, prefix='checking_status'), left_index=True, right_index=True)
+
+#credit_history in dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data.credit_history, drop_first=True, prefix='credit_history'), left_index=True, right_index=True)
+
+#Purpoe in dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data.purpose, drop_first=True, prefix='purpose'), left_index=True, right_index=True)
+#savings_statusin dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data.savings_status, drop_first=True, prefix='savings_status'), left_index=True, right_index=True)
+# employment get dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data.employment, drop_first=True, prefix='employment'), left_index=True, right_index=True)
+# personal_status get dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data["personal_status"], drop_first=True, prefix='personal_status'), left_index=True, right_index=True)
+# other_parties get dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data.other_parties, prefix='other_parties'), left_index=True, right_index=True)
+# property_magnitude get dummies 
+credit_data = credit_data.merge(pd.get_dummies(credit_data["property_magnitude"], drop_first=True, prefix='property_magnitude'), left_index=True, right_index=True)
+# other_payment_plans getdummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data["other_payment_plans"], drop_first=True, prefix='other_payment_plans'), left_index=True, right_index=True)
+
+# ohousing getdummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data["housing"], drop_first=True, prefix='housing'), left_index=True, right_index=True)
+
+# job get dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data["job"], drop_first=True, prefix='job'), left_index=True, right_index=True)
+
+# own_telephone get dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data["own_telephone"], drop_first=True, prefix='own_telephone'), left_index=True, right_index=True)
+
+# own_telephone get dummies
+credit_data = credit_data.merge(pd.get_dummies(credit_data["foreign_worker"], drop_first=True, prefix='foreign_worker'), left_index=True, right_index=True)
+
+ #Deleting the old features
+ 
+ #Excluding the missing columns
+del credit_data["checking_status"]
+del credit_data["credit_history"]
+del credit_data["purpose"]
+del credit_data["personal_status"]
+del credit_data["savings_status"]
+del credit_data["employment"]
+del credit_data["personal_status"]
+del credit_data['other_parties']
+del credit_data["property_magnitude"]
+del credit_data["other_payment_plans"]
+del credit_data["housing"]
+del credit_data["own_telephone"]
+del credit_data["foreign_worker"]
+del credit_data["job_'unemp/unskilled non res'"]
+del credit_data["job_'unskilled resident'"]
+del credit_data["foreign_worker_yes"]
+del credit_data["savings_status"]
+del credit_data["job"]
+del credit_data["class"]
+
+
+
+
+
+ """ CORRELATION
+#Looking the correlation of the data"""""
+plt.figure(figsize=(14,12))
+sns.heatmap(credit_data.astype(float).corr(),linewidths=0.1,vmax=1.0, 
+            square=True,  linecolor='white', annot=True)
+plt.show()                              
+ 
+
+
+
+# QUALITY OF DATA
+#To detect a good credit and credit at risk have the following  information like:
+#	• Length of credit history
+#	• Amounts owed
+#	• Payment history
+#	• New Credit 
+#Enough of data is available to train the data.
+#Brief description of each field is available.
+#There is no missing values which makes the data useful as more missing values the less useful is the data
+#We have enough history of data in terms of years
+
